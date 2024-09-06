@@ -1,31 +1,44 @@
 
 
 using Microsoft.AspNetCore.Mvc;
+using SabaSimulator.API.Models.ConfirmBet;
+using SabaSimulator.API.Models.PlaceBet;
+using Tgs.ServiceUtility;
 
 namespace SabaSimulator.API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
+	[Route("api/[controller]")]
+	[ApiController]
     public class SimulatorController : ControllerBase
     {
-        [HttpGet(Name = "CheckIsOnline")]
-        public async Task<IActionResult> CheckIsOnline()
+        [HttpPost("PlaceBet")]
+        public async Task<PlaceBetResult> PlaceBet(
+			[FromServices] IGetService<PlaceBetRequest, PlaceBetResult> service,
+			PlaceBetRequest source)
         {
-            var result = new
-            {
-                error_code = 0,
-                message = "",
-                Data = new[]
-                {
-                    new
-                    {
-                        vendor_member_id = "vendor_member_id",
-                        is_online = false
-                    }
-                }
-            };
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
 
-            return Ok(result);
+			return result;
         }
-    }
+
+		[HttpPost("ConfirmBet")]
+		public async Task<ConfirmBetResult> ConfirmBet(
+	    [FromServices] IGetService<ConfirmBetRequest, ConfirmBetResult> service,
+		ConfirmBetRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+
+			return result;
+		}
+
+		[HttpPost("CancelBet")]
+		public async Task<ConfirmBetResult> CancelBet(
+			[FromServices] IGetService<ConfirmBetRequest, ConfirmBetResult> service,
+			ConfirmBetRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+
+			return result;
+		}
+	}
 }
