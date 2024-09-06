@@ -4,6 +4,7 @@
 FROM hub.lumigame.com/base/dotnet/core/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["nuget.config", "."]
 COPY ["SabaSimulator.API/SabaSimulator.API.csproj", "SabaSimulator.API/"]
 RUN dotnet restore "./SabaSimulator.API/./SabaSimulator.API.csproj"
 COPY . .
