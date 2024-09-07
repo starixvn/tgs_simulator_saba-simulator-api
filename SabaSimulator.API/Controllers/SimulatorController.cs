@@ -1,6 +1,7 @@
 
 
 using Microsoft.AspNetCore.Mvc;
+using SabaSimulator.API.Models.Balance;
 using SabaSimulator.API.Models.CancelBet;
 using SabaSimulator.API.Models.ConfirmBet;
 using SabaSimulator.API.Models.PlaceBet;
@@ -36,6 +37,16 @@ namespace SabaSimulator.API.Controllers
 		public async Task<CancelBetResult> CancelBet(
 			[FromServices] IGetService<CancelBetRequest, CancelBetResult> service,
 			CancelBetRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+
+			return result;
+		}
+
+		[HttpPost("getBalance")]
+		public async Task<GetBalanceResult> GetBalance(
+		[FromServices] IGetService<GetBalanceRequest, GetBalanceResult> service,
+		GetBalanceRequest source)
 		{
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
 
