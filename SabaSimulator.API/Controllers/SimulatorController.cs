@@ -1,6 +1,7 @@
 
 
 using Microsoft.AspNetCore.Mvc;
+using SabaSimulator.API.Models.CancelBet;
 using SabaSimulator.API.Models.ConfirmBet;
 using SabaSimulator.API.Models.PlaceBet;
 using Tgs.ServiceUtility;
@@ -32,9 +33,9 @@ namespace SabaSimulator.API.Controllers
 		}
 
 		[HttpPost("CancelBet")]
-		public async Task<ConfirmBetResult> CancelBet(
-			[FromServices] IGetService<ConfirmBetRequest, ConfirmBetResult> service,
-			ConfirmBetRequest source)
+		public async Task<CancelBetResult> CancelBet(
+			[FromServices] IGetService<CancelBetRequest, CancelBetResult> service,
+			CancelBetRequest source)
 		{
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
 

@@ -13,6 +13,9 @@ builder.Services.AddCors();
 builder.Services
 	.AddHttpLogging(logging => logging.LoggingFields = HttpLoggingFields.All)
 	.AddHealthChecks();
+
+builder.Services.AddHttpClient<ConfirmBetService>();
+builder.Services.AddHttpClient<CancelBetService>();
 builder.Services.AddHttpClient<PlaceBetService>();
 var app = builder.Build();
 

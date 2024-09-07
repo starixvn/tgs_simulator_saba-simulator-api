@@ -37,7 +37,7 @@ public class ConfirmBetService : IGetService<ConfirmBetRequest, ConfirmBetResult
 		catch (Exception ex)
 		{
 			Console.Write(ex.ToString());
-			return new ConfirmBetResult("1", null, null);
+			return new ConfirmBetResult("1", null, ex.ToString());
 		}
 	}
 }
