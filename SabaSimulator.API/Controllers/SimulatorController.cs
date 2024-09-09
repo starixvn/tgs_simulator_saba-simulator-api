@@ -1,10 +1,10 @@
-
-
 using Microsoft.AspNetCore.Mvc;
 using SabaSimulator.API.Models.Balance;
 using SabaSimulator.API.Models.CancelBet;
 using SabaSimulator.API.Models.ConfirmBet;
+using SabaSimulator.API.Models.ConfirmbetParlay;
 using SabaSimulator.API.Models.PlaceBet;
+using SabaSimulator.API.Models.PlaceBetParlay;
 using SabaSimulator.API.Models.Resettle;
 using SabaSimulator.API.Models.Settle;
 using SabaSimulator.API.Models.Unsettle;
@@ -14,21 +14,37 @@ namespace SabaSimulator.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-    public class SimulatorController : ControllerBase
-    {
-        [HttpPost("PlaceBet")]
-        public async Task<PlaceBetResult> PlaceBet(
+	public class SimulatorController : ControllerBase
+	{
+		[HttpPost("PlaceBetParlay")]
+		public async Task<PlaceBetParlayResult> PlaceBetParlay(
+			[FromServices] IGetService<PlaceBetParlayRequest, PlaceBetParlayResult> service,
+			PlaceBetParlayRequest source)
+		{
+			return await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+		}
+
+		[HttpPost("PlaceBet")]
+		public async Task<PlaceBetResult> PlaceBet(
 			[FromServices] IGetService<PlaceBetRequest, PlaceBetResult> service,
 			PlaceBetRequest source)
-        {
+		{
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
 
 			return result;
-        }
+		}
+
+		[HttpPost("ConfirmBetParlay")]
+		public async Task<ConfirmBetParlayResult> ConfirmBetParlay(
+			[FromServices] IGetService<ConfirmBetParlayRequest, ConfirmBetParlayResult> service,
+			ConfirmBetParlayRequest source)
+		{
+			return await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+		}
 
 		[HttpPost("ConfirmBet")]
 		public async Task<ConfirmBetResult> ConfirmBet(
-	    [FromServices] IGetService<ConfirmBetRequest, ConfirmBetResult> service,
+		[FromServices] IGetService<ConfirmBetRequest, ConfirmBetResult> service,
 		ConfirmBetRequest source)
 		{
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
