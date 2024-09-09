@@ -5,6 +5,9 @@ using SabaSimulator.API.Models.Balance;
 using SabaSimulator.API.Models.CancelBet;
 using SabaSimulator.API.Models.ConfirmBet;
 using SabaSimulator.API.Models.PlaceBet;
+using SabaSimulator.API.Models.Resettle;
+using SabaSimulator.API.Models.Settle;
+using SabaSimulator.API.Models.Unsettle;
 using Tgs.ServiceUtility;
 
 namespace SabaSimulator.API.Controllers
@@ -47,6 +50,36 @@ namespace SabaSimulator.API.Controllers
 		public async Task<GetBalanceResult> GetBalance(
 		[FromServices] IGetService<GetBalanceRequest, GetBalanceResult> service,
 		GetBalanceRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+
+			return result;
+		}
+
+		[HttpPost("settle")]
+		public async Task<SettleResult> Settle(
+		[FromServices] IGetService<SettleRequest, SettleResult> service,
+		SettleRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+
+			return result;
+		}
+
+		[HttpPost("resettle")]
+		public async Task<ResettleResult> Resettle(
+		[FromServices] IGetService<ResettleRequest, ResettleResult> service,
+		ResettleRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+
+			return result;
+		}
+
+		[HttpPost("unsettle")]
+		public async Task<UnsettleResult> Unsettle(
+		[FromServices] IGetService<UnsettleRequest, UnsettleResult> service,
+		UnsettleRequest source)
 		{
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
 
