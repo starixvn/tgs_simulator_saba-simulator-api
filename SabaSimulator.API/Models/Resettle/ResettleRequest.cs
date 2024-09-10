@@ -34,14 +34,14 @@ public record ResettlementTransaction
 
 	public required decimal DebitAmount { get; set; }
 
-	public required string SettlementTime { get; set; }
+	public  string? SettlementTime { get; set; }
 
 	public string? ExtraStatus { get; set; } //cashout || void ticket || refund match || void cashout
 
-	public required ExtraInfo ExtraInfo { get; set; }
+	public  ExtraInfo ExtraInfo { get; set; }
 }
 
 public record ExtraInfo
 {
-	public required bool IsOnlyWinlostDateChanged { get; set; }
+	public  bool IsOnlyWinlostDateChanged { get; set; }
 }

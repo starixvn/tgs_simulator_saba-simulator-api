@@ -34,7 +34,7 @@ public class PlaceBetService : IGetService<PlaceBetRequest, PlaceBetResult>
 		catch (Exception ex)
 		{
 			Console.Write(ex.ToString());
-			return new PlaceBetResult("0", null, null, ex.Message);
+			return new PlaceBetResult("1", null, null, ex.Message);
 		}
 	}
 }
