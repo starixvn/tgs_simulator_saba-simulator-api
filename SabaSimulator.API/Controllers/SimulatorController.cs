@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using SabaSimulator.API.Models.Balance;
 using SabaSimulator.API.Models.CancelBet;
@@ -16,6 +18,18 @@ namespace SabaSimulator.API.Controllers
 	[ApiController]
 	public class SimulatorController : ControllerBase
 	{
+
+		private readonly HttpClient _httpClient;
+		private readonly string _baseUrl;
+		private readonly string _sabaPlusUrl;
+
+		public SimulatorController (HttpClient httpClient, IConfiguration configuration)
+		{
+			_httpClient = httpClient;
+			_baseUrl = configuration["BetService:BaseUrl"];
+			_sabaPlusUrl = configuration["BetService:BaseSabaPlusUrl"];
+		}
+
 		[HttpPost("PlaceBetParlay")]
 		public async Task<PlaceBetParlayResult> PlaceBetParlay(
 			[FromServices] IGetService<PlaceBetParlayRequest, PlaceBetParlayResult> service,
@@ -100,6 +114,100 @@ namespace SabaSimulator.API.Controllers
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
 
 			return result;
+		}
+
+		[HttpPost("sabaPlus-PlaceBet")]
+		public async Task<object> SabaPlusPlaceBet( object query)
+		{
+			try
+			{
+				var jsonContent = JsonSerializer.Serialize(query);
+				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/placebet", content);
+				if (!response.IsSuccessStatusCode)
+				{
+					var errorContent = await response.Content.ReadAsStringAsync();
+					return errorContent.ToString();
+				}
+				var responseContent = await response.Content.ReadAsStringAsync();
+	
+				return responseContent;
+
+			}
+			catch (Exception ex)
+			{
+				return ex;
+			}
+		}
+
+		[HttpPost("sabaPlus-EndGame")]
+		public async Task<object> SabaPlusEndGame(object query)
+		{
+			try
+			{
+				var jsonContent = JsonSerializer.Serialize(query);
+				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/endgame", content);
+
+				if (!response.IsSuccessStatusCode)
+				{
+					var errorContent = await response.Content.ReadAsStringAsync();
+					return errorContent.ToString();
+				}
+				var responseContent = await response.Content.ReadAsStringAsync();
+				return responseContent;
+			}
+			catch (Exception ex)
+			{
+				return ex;
+			}
+
+		}
+
+		[HttpPost("sabaPlus-PlaceBetAndSettle")]
+		public async Task<object> PlaceBetAndSettle(object query)
+		{
+			try
+			{
+				var jsonContent = JsonSerializer.Serialize(query);
+				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/PlaceBetAndSettle", content);
+				if (!response.IsSuccessStatusCode)
+				{
+					var errorContent = await response.Content.ReadAsStringAsync();
+					return errorContent.ToString();
+				}
+				var responseContent = await response.Content.ReadAsStringAsync();
+
+				return responseContent;
+			}
+			catch (Exception ex)
+			{
+				return ex;
+			}
+		}
+
+		[HttpPost("sabaPlus-getBalance")]
+		public async Task<object> getBalance(object query)
+		{
+			try
+			{
+				var jsonContent = JsonSerializer.Serialize(query);
+				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/getBalance", content);
+				if (!response.IsSuccessStatusCode)
+				{
+					var errorContent = await response.Content.ReadAsStringAsync();
+					return errorContent.ToString();
+				}
+				var responseContent = await response.Content.ReadAsStringAsync();
+
+				return responseContent;
+			}
+			catch (Exception ex)
+			{
+				return ex;
+			}
 		}
 	}
 }
