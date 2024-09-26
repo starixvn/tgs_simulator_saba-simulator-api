@@ -21,6 +21,7 @@ namespace SabaSimulator.API.Controllers
 
 		private readonly HttpClient _httpClient;
 		private readonly string _baseUrl;
+		private readonly string _simulatorUrl;
 		private readonly string _sabaPlusUrl;
 
 		public SimulatorController (HttpClient httpClient, IConfiguration configuration)
@@ -28,6 +29,7 @@ namespace SabaSimulator.API.Controllers
 			_httpClient = httpClient;
 			_baseUrl = configuration["BetService:BaseUrl"];
 			_sabaPlusUrl = configuration["BetService:BaseSabaPlusUrl"];
+			_simulatorUrl = configuration["BetService:SabaSimulatorUrl"];
 		}
 
 		[HttpPost("PlaceBetParlay")]
@@ -195,6 +197,34 @@ namespace SabaSimulator.API.Controllers
 				var jsonContent = JsonSerializer.Serialize(query);
 				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/getBalance", content);
+				if (!response.IsSuccessStatusCode)
+				{
+					var errorContent = await response.Content.ReadAsStringAsync();
+					return errorContent.ToString();
+				}
+				var responseContent = await response.Content.ReadAsStringAsync();
+
+				return responseContent;
+			}
+			catch (Exception ex)
+			{
+				return ex;
+			}
+		}
+
+		[HttpGet("GetsimulatorUrl")]
+		public string GetSimulatorURL()
+		 => _simulatorUrl;
+
+		[HttpGet("GetResultCheck")]
+		public async Task<object> BetResultCheck()
+		{
+			try
+			{
+				var query = new { DiffInMinute = 5 };
+				var jsonContent = JsonSerializer.Serialize(query);
+				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/bet/ResultCheck", content);
 				if (!response.IsSuccessStatusCode)
 				{
 					var errorContent = await response.Content.ReadAsStringAsync();
