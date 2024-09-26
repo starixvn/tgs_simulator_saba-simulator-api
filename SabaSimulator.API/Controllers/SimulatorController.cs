@@ -11,6 +11,7 @@ using SabaSimulator.API.Models.Resettle;
 using SabaSimulator.API.Models.Settle;
 using SabaSimulator.API.Models.Unsettle;
 using Tgs.ServiceUtility;
+using SabaSimulator.API.Models.LaunchGame;
 
 namespace SabaSimulator.API.Controllers
 {
@@ -212,11 +213,15 @@ namespace SabaSimulator.API.Controllers
 			}
 		}
 
-		[HttpGet("GetsimulatorUrl")]
-		public string GetSimulatorURL()
-		 => _simulatorUrl;
-
-		[HttpGet("GetResultCheck")]
+		[HttpPost("GetsimulatorUrl")]
+		public LaunchGameResult GetSimulatorURL( LaunchGameRequest request)
+		{
+			var res = new LaunchGameResult();
+			res.Payload.ReturnUrl = _simulatorUrl;
+			return res;
+		}
+		 
+		[HttpPost("BetResultCheck")]
 		public async Task<object> BetResultCheck()
 		{
 			try
