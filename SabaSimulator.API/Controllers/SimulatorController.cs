@@ -127,13 +127,9 @@ namespace SabaSimulator.API.Controllers
 				var jsonContent = JsonSerializer.Serialize(query);
 				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/placebet", content);
-				if (!response.IsSuccessStatusCode)
-				{
-					var errorContent = await response.Content.ReadAsStringAsync();
-					return errorContent.ToString();
-				}
+
 				var responseContent = await response.Content.ReadAsStringAsync();
-	
+
 				return responseContent;
 
 			}
@@ -203,6 +199,25 @@ namespace SabaSimulator.API.Controllers
 					var errorContent = await response.Content.ReadAsStringAsync();
 					return errorContent.ToString();
 				}
+				var responseContent = await response.Content.ReadAsStringAsync();
+
+				return responseContent;
+			}
+			catch (Exception ex)
+			{
+				return ex;
+			}
+		}
+
+		[HttpPost("sabaPlus-VoidGame")]
+		public async Task<object> voidGame(object query)
+		{
+			try
+			{
+				var jsonContent = JsonSerializer.Serialize(query);
+				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/voidGame", content);
 				var responseContent = await response.Content.ReadAsStringAsync();
 
 				return responseContent;
