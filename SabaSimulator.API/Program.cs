@@ -7,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddMemoryCache(options =>
+{
+	options.ExpirationScanFrequency = TimeSpan.FromMinutes(10);
+});
 builder.Services.AddSwaggerGen();
 builder.Services.AddSabaPlusApiCore();
 builder.Services.AddCors();
@@ -25,6 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseCors(x =>
 	x.AllowAnyMethod()
 		.AllowAnyHeader()

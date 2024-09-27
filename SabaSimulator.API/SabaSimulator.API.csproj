@@ -9,10 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="TGS.ServiceUtility" Version="0.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\GetResultCheck\" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

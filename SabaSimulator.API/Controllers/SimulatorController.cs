@@ -12,6 +12,9 @@ using SabaSimulator.API.Models.Settle;
 using SabaSimulator.API.Models.Unsettle;
 using Tgs.ServiceUtility;
 using SabaSimulator.API.Models.LaunchGame;
+using SabaSimulator.API.Models.SabaPlusPlaceBet;
+using SabaSimulator.API.Models.BetResultCheck;
+using SabaSimulator.API.Models.SabaPlusEndGame;
 
 namespace SabaSimulator.API.Controllers
 {
@@ -120,47 +123,36 @@ namespace SabaSimulator.API.Controllers
 		}
 
 		[HttpPost("sabaPlus-PlaceBet")]
-		public async Task<object> SabaPlusPlaceBet( object query)
+		public async Task<object> SabaPlusPlaceBet([FromServices] IGetService<SabaPlusPlaceBetRequest, object> service,
+		SabaPlusPlaceBetRequest source)
 		{
-			try
-			{
-				var jsonContent = JsonSerializer.Serialize(query);
-				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/placebet", content);
+	      var result = await  service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			
+		  return result;
+		}
 
-				var responseContent = await response.Content.ReadAsStringAsync();
+		[HttpPost("BetResultCheck")]
+		public async Task<BetResultCheckResponse> BetResultCheck([FromServices] IGetService<BetResultCheckRequest, BetResultCheckResponse> service,
+		BetResultCheckRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			return result; 
+		}
 
-				return responseContent;
-
-			}
-			catch (Exception ex)
-			{
-				return ex;
-			}
+		[HttpPost("GetsimulatorUrl")]
+		public LaunchGameResult GetSimulatorURL(LaunchGameRequest request)
+		{
+			var res = new LaunchGameResult();
+			res.Payload.ReturnUrl = _simulatorUrl;
+			return res;
 		}
 
 		[HttpPost("sabaPlus-EndGame")]
-		public async Task<object> SabaPlusEndGame(object query)
+		public async Task<object> SabaPlusEndGame([FromServices] IGetService<SabaPlusEndGameRequest, object> service,
+		SabaPlusEndGameRequest source)
 		{
-			try
-			{
-				var jsonContent = JsonSerializer.Serialize(query);
-				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/endgame", content);
-
-				if (!response.IsSuccessStatusCode)
-				{
-					var errorContent = await response.Content.ReadAsStringAsync();
-					return errorContent.ToString();
-				}
-				var responseContent = await response.Content.ReadAsStringAsync();
-				return responseContent;
-			}
-			catch (Exception ex)
-			{
-				return ex;
-			}
-
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			return result; 
 		}
 
 		[HttpPost("sabaPlus-PlaceBetAndSettle")]
@@ -171,11 +163,6 @@ namespace SabaSimulator.API.Controllers
 				var jsonContent = JsonSerializer.Serialize(query);
 				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/PlaceBetAndSettle", content);
-				if (!response.IsSuccessStatusCode)
-				{
-					var errorContent = await response.Content.ReadAsStringAsync();
-					return errorContent.ToString();
-				}
 				var responseContent = await response.Content.ReadAsStringAsync();
 
 				return responseContent;
@@ -209,55 +196,39 @@ namespace SabaSimulator.API.Controllers
 			}
 		}
 
+
+
 		[HttpPost("sabaPlus-VoidGame")]
 		public async Task<object> voidGame(object query)
+
 		{
+
 			try
 			{
+
 				var jsonContent = JsonSerializer.Serialize(query);
+
 				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
 
 				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/voidGame", content);
+
 				var responseContent = await response.Content.ReadAsStringAsync();
 
-				return responseContent;
-			}
-			catch (Exception ex)
-			{
-				return ex;
-			}
-		}
-
-		[HttpPost("GetsimulatorUrl")]
-		public LaunchGameResult GetSimulatorURL( LaunchGameRequest request)
-		{
-			var res = new LaunchGameResult();
-			res.Payload.ReturnUrl = _simulatorUrl;
-			return res;
-		}
-		 
-		[HttpPost("BetResultCheck")]
-		public async Task<object> BetResultCheck()
-		{
-			try
-			{
-				var query = new { DiffInMinute = 5 };
-				var jsonContent = JsonSerializer.Serialize(query);
-				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/bet/ResultCheck", content);
-				if (!response.IsSuccessStatusCode)
-				{
-					var errorContent = await response.Content.ReadAsStringAsync();
-					return errorContent.ToString();
-				}
-				var responseContent = await response.Content.ReadAsStringAsync();
 
 				return responseContent;
+
 			}
+
 			catch (Exception ex)
+
 			{
+
 				return ex;
+
 			}
+
 		}
+
 	}
 }
