@@ -9,15 +9,12 @@ namespace SabaSimulator.API.Controllers;
 [ApiController]
 public class CommonWalletController :ControllerBase
 {
-
 	private readonly string _simulatorUrl;
-
 
 	public CommonWalletController(HttpClient httpClient, IConfiguration configuration)
 	{
 		_simulatorUrl = configuration["BetService:SabaSimulatorUrl"];
 	}
-
 
 	[HttpPost("LaunchGame")]
 	public LaunchGameResult GetSimulatorURL(LaunchGameRequest request)

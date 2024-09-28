@@ -7,7 +7,7 @@ using Tgs.ServiceUtility;
 
 namespace SabaSimulator.API.Services;
 
-public class GetBetResultChecksByTicketNoService : IGetService<GetAllBetResultChecksRequest, BetResultPayloadModel>
+public class GetBetResultChecksByTicketNoService : IGetService<GetAllBetResultChecksRequest, BetResultCheckResponse>
 {
 	private readonly IMemoryCache _memoryCache;
 
@@ -16,10 +16,10 @@ public class GetBetResultChecksByTicketNoService : IGetService<GetAllBetResultCh
 		_memoryCache = memoryCache;
 	}
 
-	public async ValueTask<BetResultPayloadModel> GetAsync(GetAllBetResultChecksRequest query, CancellationToken cancellationToken = default)
+	public async ValueTask<BetResultCheckResponse> GetAsync(GetAllBetResultChecksRequest query, CancellationToken cancellationToken = default)
 	{
 		var ticketNo = query?.TicketNo;
 
-		return _memoryCache?.Get<BetResultPayloadModel?>(ticketNo);
+		return _memoryCache?.Get<BetResultCheckResponse?>(ticketNo);
 	}
 }

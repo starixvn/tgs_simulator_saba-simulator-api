@@ -5,7 +5,7 @@ public class BetResultCheckResponse
 	public string? Seq { get; set; }
 	public int? ErrorCode { get; set; }
 	public string? ErrorMessage { get; set; }
-	public string? TimeStamp { get; set; }
+	public string? TimeStamp { get; set; } 
 	public BetResultPayloadModel? Payload { get; set; }
 }
 
@@ -16,7 +16,7 @@ public class BetResultPayloadModel
 	public string? GameRoundId { get; set; }
 	public string? TransactionId { get; set; }
 	public short? Status { get; set; } 
-	//public decimal Stack { get; set; }
+
 	public decimal? ActualStake { get; set; }
 	public decimal? NetStake { get; set; }
 	public decimal? Payout { get; set; }

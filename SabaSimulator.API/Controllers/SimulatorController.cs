@@ -187,7 +187,7 @@ namespace SabaSimulator.API.Controllers
 		}
 
 		[HttpPost("GetBetResultCheckByTicketId")]
-		public async Task<BetResultPayloadModel> GetResultChecks([FromServices] IGetService<GetAllBetResultChecksRequest, BetResultPayloadModel> service,
+		public async Task<BetResultCheckResponse> GetResultChecks([FromServices] IGetService<GetAllBetResultChecksRequest, BetResultCheckResponse> service,
 		  GetAllBetResultChecksRequest source)
 		{
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);

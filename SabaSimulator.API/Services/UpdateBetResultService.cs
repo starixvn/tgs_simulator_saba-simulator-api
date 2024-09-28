@@ -19,11 +19,10 @@ public class UpdateBetResultService : IGetService<UpdateBetResultRequest, string
 		{
 			string key = $"{query?.TicketNo}";
 
-			if (!string.IsNullOrEmpty(key)&& _memoryCache.TryGetValue(key, out BetResultPayloadModel? value))
+			if (!string.IsNullOrEmpty(key)&& _memoryCache.TryGetValue(key, out BetResultCheckResponse? value))
 			{
-				_memoryCache.Set(key, query, TimeSpan.FromMinutes(60));
+				_memoryCache.Set(key, query.BetResult, TimeSpan.FromMinutes(60));
 				return "update bet result check success";
-			
 			}
          return "update failed"; 	    
 

@@ -42,7 +42,7 @@ public class SabaPlusPlaceBetAndSettleService : IGetService<SabaPlusPlaceBetAndS
 				var datas = BetResultCheckBuilder.BuildBetResultByPlaceBetAndSettle(query);
 				foreach (var ticket in datas)
 				{
-					string key = $"{ticket.TicketNo}";
+					string key = $"{ticket.Payload.TicketNo}";
 					_memoryCache.Set(key, ticket, TimeSpan.FromMinutes(60));
 				}
 

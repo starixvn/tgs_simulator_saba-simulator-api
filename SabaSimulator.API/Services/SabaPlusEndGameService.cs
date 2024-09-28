@@ -41,7 +41,7 @@ public class SabaPlusEndGameService : IGetService<SabaPlusEndGameRequest, object
 				var datas = BetResultCheckBuilder.BuildBetResultBySettle(query);
 				foreach (var ticket in datas)
 				{
-					string key = $"{ticket.TicketNo}";
+					string key = $"{ticket?.Payload?.TicketNo}";
 					_memoryCache.Set(key, ticket, TimeSpan.FromMinutes(60));
 				}
 

@@ -16,28 +16,28 @@ public BetResultCheckService(HttpClient httpClient, IConfiguration configuration
 	public async ValueTask< BetResultCheckResponse> GetAsync(BetResultCheckRequest query, CancellationToken cancellationToken = default)
 	{
 		string key = $"{query?.Payload?.TicketNo}";
-		_ = _memoryCache.TryGetValue(key, out BetResultPayloadModel? value);
-		if (value is not null)
+		  _memoryCache.TryGetValue(key, out BetResultCheckResponse? value);
+		if ( value is not null )
 		{
-			var response = new BetResultCheckResponse
-			{
-				Seq = Guid.NewGuid().ToString(),
-				ErrorCode = 0,
-				ErrorMessage = "Success",
-				TimeStamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
-				Payload = value
-			};
-
-			return response;
+			value.Seq = Guid.NewGuid().ToString();
+			value.TimeStamp= DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+			return value;
 		}
+
 		return new BetResultCheckResponse
 		{
 			Seq = Guid.NewGuid().ToString(),
-			ErrorCode = 3016,
-			ErrorMessage = "No Such Ticket",
+			ErrorCode = 0,
+			ErrorMessage = "Success",
 			TimeStamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
-			Payload = null
+			Payload = new BetResultPayloadModel()
+			{
+				Status = 1,
+				ActualStake = 100,
+				SettleDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
+				TicketNo = query?.Payload?.TicketNo,
+				NetStake = 100
+			}
 		};
-
 	}
 }
