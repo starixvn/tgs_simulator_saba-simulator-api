@@ -2,6 +2,7 @@
 using SabaSimulator.API.Models.SabaPlusEndGame;
 using SabaSimulator.API.Models.SabaPlusPlaceBet;
 using SabaSimulator.API.Models.SabaPlusPlaceBetAndSettle;
+using SabaSimulator.API.Models.VoidGame;
 using System.Linq;
 
 namespace SabaSimulator.API.Helper;
@@ -21,24 +22,34 @@ public static class BetResultCheckBuilder
 			Odds = data?.Payload?.BetDataSet[0].Odds
 		};
 
-
-	public static  List<BetResultPayloadModel> BuildBetResultBySettle(SabaPlusEndGameRequest data)
+	public static List<BetResultPayloadModel> BuildBetResultBySettle(SabaPlusEndGameRequest data)
 		=> (from item in data?.Payload?.BetDataSet
-				select new BetResultPayloadModel
-				{
-					TicketNo = item.TicketNo,
-					OperatorCustId = data?.Payload?.OperatorCustId,
-					GameRoundId = item.GameRoundId,
-					TransactionId = item.TransactionId,
-					Status  = 1,
-					ActualStake = item.ActualStake,
-					NetStake = item.NetStake,
-					Odds = item.Odds,
-				    Payout= item.Payout,
-				    GameResult= item.GameResult,
-				    OtherBetInfo= item.OtherBetInfo,
-				    SettleDate= item.SettleDate,
-				}).ToList();
+			select new BetResultPayloadModel
+			{
+				TicketNo = item.TicketNo,
+				OperatorCustId = data?.Payload?.OperatorCustId,
+				GameRoundId = item.GameRoundId,
+				TransactionId = item.TransactionId,
+				Status = 1,
+				ActualStake = item.ActualStake,
+				NetStake = item.NetStake,
+				Odds = item.Odds,
+				Payout = item.Payout,
+				GameResult = item.GameResult,
+				OtherBetInfo = item.OtherBetInfo,
+				SettleDate = item.SettleDate,
+			}).ToList();
+
+	public static List<BetResultPayloadModel> BuildBetResultByVoidGame(VoidGameRequest data)
+	=> (from item in data?.Payload?.BetDataSet
+		select new BetResultPayloadModel
+		{
+			TicketNo = item.TicketNo,
+			OperatorCustId = data?.Payload?.OperatorCustId,
+			GameRoundId = item.GameRoundId,
+			TransactionId = item.TransactionId,
+			Status = (short)item.Status,
+		}).ToList();
 
 	public static List<BetResultPayloadModel> BuildBetResultByPlaceBetAndSettle(SabaPlusPlaceBetAndSettleRequest data)
 	=> (from item in data?.Payload?.BetDataSet

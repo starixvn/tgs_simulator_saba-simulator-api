@@ -16,6 +16,7 @@ using SabaSimulator.API.Models.SabaPlusPlaceBet;
 using SabaSimulator.API.Models.BetResultCheck;
 using SabaSimulator.API.Models.SabaPlusEndGame;
 using SabaSimulator.API.Models.SabaPlusPlaceBetAndSettle;
+using SabaSimulator.API.Models.VoidGame;
 
 namespace SabaSimulator.API.Controllers
 {
@@ -23,13 +24,12 @@ namespace SabaSimulator.API.Controllers
 	[ApiController]
 	public class SimulatorController : ControllerBase
 	{
-
 		private readonly HttpClient _httpClient;
 		private readonly string _baseUrl;
 		private readonly string _simulatorUrl;
 		private readonly string _sabaPlusUrl;
 
-		public SimulatorController (HttpClient httpClient, IConfiguration configuration)
+		public SimulatorController(HttpClient httpClient, IConfiguration configuration)
 		{
 			_httpClient = httpClient;
 			_baseUrl = configuration["BetService:BaseUrl"];
@@ -127,9 +127,9 @@ namespace SabaSimulator.API.Controllers
 		public async Task<object> SabaPlusPlaceBet([FromServices] IGetService<SabaPlusPlaceBetRequest, object> service,
 		SabaPlusPlaceBetRequest source)
 		{
-	      var result = await  service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
-			
-		  return result;
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+
+			return result;
 		}
 
 		[HttpPost("sabaPlus-EndGame")]
@@ -137,7 +137,7 @@ namespace SabaSimulator.API.Controllers
 		SabaPlusEndGameRequest source)
 		{
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
-			return result; 
+			return result;
 		}
 
 		[HttpPost("sabaPlus-PlaceBetAndSettle")]
@@ -145,7 +145,7 @@ namespace SabaSimulator.API.Controllers
 		SabaPlusPlaceBetAndSettleRequest source)
 		{
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
-			return result; 	
+			return result;
 		}
 
 		[HttpPost("sabaPlus-getBalance")]
@@ -172,21 +172,10 @@ namespace SabaSimulator.API.Controllers
 		}
 
 		[HttpPost("sabaPlus-VoidGame")]
-		public async Task<object> voidGame(object query)
+		public async Task<object> voidGame([FromServices] IGetService<VoidGameRequest, object> service, VoidGameRequest source)
 		{
-			try
-			{
-				var jsonContent = JsonSerializer.Serialize(query);
-				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/voidGame", content);
-				var responseContent = await response.Content.ReadAsStringAsync();
-				return responseContent;
-
-			}
-			catch (Exception ex)
-			{
-			  return ex;
-			}
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			return result;
 		}
 
 		[HttpPost("BetResultCheck")]
