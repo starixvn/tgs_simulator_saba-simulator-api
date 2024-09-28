@@ -11,4 +11,6 @@ public class LaunchGameResult
 public class LaunchGamePayload
 {
 	public string ReturnUrl { get; set; } 
+
+	public string Token { get; set; } = Guid.NewGuid().ToString("N");
 }
