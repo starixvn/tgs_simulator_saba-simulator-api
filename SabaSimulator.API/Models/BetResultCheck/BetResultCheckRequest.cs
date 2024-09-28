@@ -12,7 +12,7 @@ public class PayloadModel
 	public string? GameType { get; set; }
 	public string? OperatorCustId { get; set; }
 	public string? TicketNo { get; set; }
-	public DateTime? TransDate { get; set; }
+	public string? TransDate { get; set; }
 	public AgentInfoModel? AgentInfo { get; set; }
 }
 

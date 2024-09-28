@@ -197,6 +197,22 @@ namespace SabaSimulator.API.Controllers
 			return result;
 		}
 
+		[HttpPost("UpdateBetResultCheck")]
+		public async Task<string> BetResultCheck([FromServices] IGetService<UpdateBetResultRequest, string> service,
+			UpdateBetResultRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			return result;
+		}
+
+		[HttpPost("GetBetResultCheckByTicketId")]
+		public async Task<BetResultPayloadModel> GetResultChecks([FromServices] IGetService<GetAllBetResultChecksRequest, BetResultPayloadModel> service,
+		  GetAllBetResultChecksRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			return result;
+		}
+
 		[HttpPost("GetsimulatorUrl")]
 		public LaunchGameResult GetSimulatorURL(LaunchGameRequest request)
 		{
