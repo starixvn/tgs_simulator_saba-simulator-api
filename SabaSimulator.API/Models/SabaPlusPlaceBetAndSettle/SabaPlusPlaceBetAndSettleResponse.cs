@@ -1,5 +1,14 @@
-﻿namespace SabaSimulator.API.Models.SabaPlusPlaceBetAndSettle;
+﻿using SabaSimulator.API.Models.SabaPlus;
 
-public class SabaPlusPlaceBetAndSettleResponse
+namespace SabaSimulator.API.Models.SabaPlusPlaceBetAndSettle;
+
+public class SabaPlusPlaceBetAndSettleResponse : GameProviderResponse<PlaceBetAndSettlePayload>;
+
+public record PlaceBetAndSettlePayload(string OperatorCustId, decimal Balance, PlaceBetAndSettleResultDataSet[] BetDataSet);
+
+public class PlaceBetAndSettleResultDataSet
 {
+	public string TicketNo { get; set; }
+
+	public string RefNo { get; set; }
 }

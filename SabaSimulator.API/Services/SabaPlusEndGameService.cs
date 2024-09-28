@@ -45,7 +45,6 @@ public class SabaPlusEndGameService : IGetService<SabaPlusEndGameRequest, object
 					_memoryCache.Set(key, ticket, TimeSpan.FromMinutes(60));
 				}
 
-				
 			}
 
 			return responseContent;

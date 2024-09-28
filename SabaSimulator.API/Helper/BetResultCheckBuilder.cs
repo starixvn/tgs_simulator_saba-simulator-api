@@ -1,6 +1,7 @@
 ﻿using SabaSimulator.API.Models.BetResultCheck;
 using SabaSimulator.API.Models.SabaPlusEndGame;
 using SabaSimulator.API.Models.SabaPlusPlaceBet;
+using SabaSimulator.API.Models.SabaPlusPlaceBetAndSettle;
 using System.Linq;
 
 namespace SabaSimulator.API.Helper;
@@ -38,4 +39,20 @@ public static class BetResultCheckBuilder
 				    OtherBetInfo= item.OtherBetInfo,
 				    SettleDate= item.SettleDate,
 				}).ToList();
+
+	public static List<BetResultPayloadModel> BuildBetResultByPlaceBetAndSettle(SabaPlusPlaceBetAndSettleRequest data)
+	=> (from item in data?.Payload?.BetDataSet
+		select new BetResultPayloadModel
+		{
+			TicketNo = item.TicketNo,
+			OperatorCustId = data?.Payload?.OperatorCustId,
+			GameRoundId = item.GameRoundId,
+			TransactionId = item.TransactionId,
+			Status = 1,
+			ActualStake = item.ActualStake,
+			NetStake = item.NetStake,
+			Payout = item.Payout,
+			OtherBetInfo = item.OtherBetInfo,
+			SettleDate = item.SettleDate,
+		}).ToList();
 }

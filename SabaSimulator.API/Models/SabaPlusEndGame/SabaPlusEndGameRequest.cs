@@ -4,7 +4,6 @@ public class SabaPlusEndGameRequest : GameProviderRequest<EndGameRequestPayload>
 
 public record EndGameRequestPayload(string? OperatorCustId, string? GameType, EndGameDataSet[]? BetDataSet)
 {
-	public string Action = "EndGame";
 }
 
 public class EndGameDataSet

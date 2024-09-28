@@ -15,6 +15,7 @@ using SabaSimulator.API.Models.LaunchGame;
 using SabaSimulator.API.Models.SabaPlusPlaceBet;
 using SabaSimulator.API.Models.BetResultCheck;
 using SabaSimulator.API.Models.SabaPlusEndGame;
+using SabaSimulator.API.Models.SabaPlusPlaceBetAndSettle;
 
 namespace SabaSimulator.API.Controllers
 {
@@ -131,22 +132,6 @@ namespace SabaSimulator.API.Controllers
 		  return result;
 		}
 
-		[HttpPost("BetResultCheck")]
-		public async Task<BetResultCheckResponse> BetResultCheck([FromServices] IGetService<BetResultCheckRequest, BetResultCheckResponse> service,
-		BetResultCheckRequest source)
-		{
-			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
-			return result; 
-		}
-
-		[HttpPost("GetsimulatorUrl")]
-		public LaunchGameResult GetSimulatorURL(LaunchGameRequest request)
-		{
-			var res = new LaunchGameResult();
-			res.Payload.ReturnUrl = _simulatorUrl;
-			return res;
-		}
-
 		[HttpPost("sabaPlus-EndGame")]
 		public async Task<object> SabaPlusEndGame([FromServices] IGetService<SabaPlusEndGameRequest, object> service,
 		SabaPlusEndGameRequest source)
@@ -156,21 +141,11 @@ namespace SabaSimulator.API.Controllers
 		}
 
 		[HttpPost("sabaPlus-PlaceBetAndSettle")]
-		public async Task<object> PlaceBetAndSettle(object query)
+		public async Task<object> PlaceBetAndSettle([FromServices] IGetService<SabaPlusPlaceBetAndSettleRequest, object> service,
+		SabaPlusPlaceBetAndSettleRequest source)
 		{
-			try
-			{
-				var jsonContent = JsonSerializer.Serialize(query);
-				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/PlaceBetAndSettle", content);
-				var responseContent = await response.Content.ReadAsStringAsync();
-
-				return responseContent;
-			}
-			catch (Exception ex)
-			{
-				return ex;
-			}
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			return result; 	
 		}
 
 		[HttpPost("sabaPlus-getBalance")]
@@ -196,39 +171,38 @@ namespace SabaSimulator.API.Controllers
 			}
 		}
 
-
-
 		[HttpPost("sabaPlus-VoidGame")]
 		public async Task<object> voidGame(object query)
-
 		{
-
 			try
 			{
-
 				var jsonContent = JsonSerializer.Serialize(query);
-
 				var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-
 				var response = await _httpClient.PostAsync($"{_sabaPlusUrl}/api/player/voidGame", content);
-
 				var responseContent = await response.Content.ReadAsStringAsync();
-
-
 				return responseContent;
 
 			}
-
 			catch (Exception ex)
-
 			{
-
-				return ex;
-
+			  return ex;
 			}
-
 		}
 
+		[HttpPost("BetResultCheck")]
+		public async Task<BetResultCheckResponse> BetResultCheck([FromServices] IGetService<BetResultCheckRequest, BetResultCheckResponse> service,
+		BetResultCheckRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			return result;
+		}
+
+		[HttpPost("GetsimulatorUrl")]
+		public LaunchGameResult GetSimulatorURL(LaunchGameRequest request)
+		{
+			var res = new LaunchGameResult();
+			res.Payload.ReturnUrl = _simulatorUrl;
+			return res;
+		}
 	}
 }
