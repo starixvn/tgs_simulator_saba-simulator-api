@@ -178,14 +178,6 @@ namespace SabaSimulator.API.Controllers
 			return result;
 		}
 
-		[HttpPost("BetResultCheck")]
-		public async Task<BetResultCheckResponse> BetResultCheck([FromServices] IGetService<BetResultCheckRequest, BetResultCheckResponse> service,
-		BetResultCheckRequest source)
-		{
-			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
-			return result;
-		}
-
 		[HttpPost("UpdateBetResultCheck")]
 		public async Task<string> BetResultCheck([FromServices] IGetService<UpdateBetResultRequest, string> service,
 			UpdateBetResultRequest source)
@@ -202,12 +194,5 @@ namespace SabaSimulator.API.Controllers
 			return result;
 		}
 
-		[HttpPost("GetsimulatorUrl")]
-		public LaunchGameResult GetSimulatorURL(LaunchGameRequest request)
-		{
-			var res = new LaunchGameResult();
-			res.Payload.ReturnUrl = _simulatorUrl;
-			return res;
-		}
 	}
 }
