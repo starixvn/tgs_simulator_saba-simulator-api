@@ -2,8 +2,6 @@
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Memory;
 using SabaSimulator.API.Helper;
-using SabaSimulator.API.Models.BetResultCheck;
-using SabaSimulator.API.Models.PlaceBet;
 using SabaSimulator.API.Models.SabaPlusPlaceBet;
 using Tgs.ServiceUtility;
 
