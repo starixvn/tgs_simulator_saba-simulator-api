@@ -17,6 +17,7 @@ using SabaSimulator.API.Models.BetResultCheck;
 using SabaSimulator.API.Models.SabaPlusEndGame;
 using SabaSimulator.API.Models.SabaPlusPlaceBetAndSettle;
 using SabaSimulator.API.Models.VoidGame;
+using SabaSimulator.API.Models.FreeSpin;
 
 namespace SabaSimulator.API.Controllers
 {
@@ -178,6 +179,13 @@ namespace SabaSimulator.API.Controllers
 			return result;
 		}
 
+		[HttpPost("sabaPlus-FreeSpin")]
+		public async Task<object> voidGame([FromServices] IGetService<FreeSpinRequest, object> service, FreeSpinRequest source)
+		{
+			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
+			return result;
+		}
+
 		[HttpPost("UpdateBetResultCheck")]
 		public async Task<string> BetResultCheck([FromServices] IGetService<UpdateBetResultRequest, string> service,
 			UpdateBetResultRequest source)
@@ -193,6 +201,5 @@ namespace SabaSimulator.API.Controllers
 			var result = await service.GetAsync(source, cancellationToken: HttpContext.RequestAborted).ConfigureAwait(false);
 			return result;
 		}
-
 	}
 }
