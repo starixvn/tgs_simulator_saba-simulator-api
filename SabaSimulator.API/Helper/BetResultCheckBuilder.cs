@@ -42,6 +42,7 @@ public static class BetResultCheckBuilder
 				Seq = Guid.NewGuid().ToString(),
 				TimeStamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
 				Payload =
+				new BetResultPayloadModel
 				{
 					TicketNo = item.TicketNo,
 					OperatorCustId = data?.Payload?.OperatorCustId,
@@ -68,6 +69,7 @@ public static class BetResultCheckBuilder
 			Seq = Guid.NewGuid().ToString(),
 			TimeStamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
 			Payload =
+				new BetResultPayloadModel
 				{
 					TicketNo = item.TicketNo,
 					OperatorCustId = data?.Payload?.OperatorCustId,
@@ -87,17 +89,18 @@ public static class BetResultCheckBuilder
 			Seq = Guid.NewGuid().ToString(),
 			TimeStamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
 			Payload =
+			new BetResultPayloadModel
 			{
-				TicketNo = item.TicketNo,
+				TicketNo = item?.TicketNo,
 				OperatorCustId = data?.Payload?.OperatorCustId,
-				GameRoundId = item.GameRoundId,
-				TransactionId = item.TransactionId,
+				GameRoundId = item?.GameRoundId,
+				TransactionId = item?.TransactionId,
 				Status = 1,
-				ActualStake = item.ActualStake,
-				NetStake = item.NetStake,
-				Payout = item.Payout,
-				OtherBetInfo = item.OtherBetInfo,
-				SettleDate = item.SettleDate,
+				ActualStake = item?.ActualStake,
+				NetStake = item?.NetStake,
+				Payout = item?.Payout,
+				OtherBetInfo = item?.OtherBetInfo,
+				SettleDate = item?.SettleDate,
 			}
 			
 		}).ToList();
