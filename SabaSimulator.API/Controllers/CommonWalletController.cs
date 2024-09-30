@@ -20,7 +20,7 @@ public class CommonWalletController :ControllerBase
 	public LaunchGameResult GetSimulatorURL(LaunchGameRequest request)
 	{
 		var res = new LaunchGameResult();
-		res.Payload.ReturnUrl = _simulatorUrl;
+		res.Payload.ReturnUrl = $"{_simulatorUrl}?userCustId={request?.Payload?.CustInfo?.OperatorCustomerId}";
 		return res;
 	}
 
