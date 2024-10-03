@@ -32,6 +32,9 @@ public BetResultCheckService(HttpClient httpClient, IConfiguration configuration
 			TimeStamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
 			Payload = new BetResultPayloadModel()
 			{
+				OperatorCustId = query?.Payload?.OperatorCustId,
+				GameRoundId="simulator-betresult-11111",
+				Payout = 100,
 				Status = 1,
 				ActualStake = 100,
 				SettleDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),

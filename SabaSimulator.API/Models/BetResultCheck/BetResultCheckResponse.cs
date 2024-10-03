@@ -16,7 +16,6 @@ public class BetResultPayloadModel
 	public string? GameRoundId { get; set; }
 	public string? TransactionId { get; set; }
 	public short? Status { get; set; } 
-
 	public decimal? ActualStake { get; set; }
 	public decimal? NetStake { get; set; }
 	public decimal? Payout { get; set; }
