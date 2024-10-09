@@ -23,8 +23,9 @@ public static class BetResultCheckBuilder
 				GameRoundId = data?.Payload?.BetDataSet[0].GameRoundId,
 				TransactionId = data?.Payload?.BetDataSet[0].TransactionId,
 				Status = 0,
-				ActualStake = data?.Payload?.BetDataSet[0].ActualStake,
-				NetStake = data?.Payload?.BetDataSet[0].Stake,
+				Payout = 0,
+				ActualStake = data?.Payload?.BetDataSet[0].ActualStake ?? 0,
+				NetStake = data?.Payload?.BetDataSet[0].Stake ?? 0,
 				Odds = data?.Payload?.BetDataSet[0].Odds
 			}
 		};
@@ -63,15 +64,14 @@ public static class BetResultCheckBuilder
 			ErrorMessage = "Success",
 			Seq = Guid.NewGuid().ToString(),
 			TimeStamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
-			Payload =
-				new BetResultPayloadModel
-				{
-					TicketNo = item.TicketNo,
-					OperatorCustId = data?.Payload?.OperatorCustId,
-					GameRoundId = item.GameRoundId,
-					TransactionId = item.TransactionId,
-					Status = (short)item.Status,
-				}
+			Payload = new()
+			{
+				TicketNo = item.TicketNo,
+				OperatorCustId = data?.Payload?.OperatorCustId,
+				GameRoundId = item.GameRoundId,
+				TransactionId = item.TransactionId,
+				Status = (short)item.Status,
+			}
 		}).ToList();
 
 	public static List<BetResultCheckResponse> BuildBetResultByPlaceBetAndSettle(SabaPlusPlaceBetAndSettleRequest data)
